@@ -1,5 +1,6 @@
 "use client";
 
+import log4js from "log4js";
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -20,6 +21,27 @@ export default function Home() {
     const data = await response.json();
     console.log(data);
   };
+
+  log4js.configure({
+    appenders: {
+      console: {
+        type: "console",
+        layout: {
+          type: "pattern",
+          pattern:
+            "%d{yyyy/MM/dd hh:mm:ss} [%-5p] [%X{traceId}] [%c] (%t) %m%ex%n",
+        },
+      },
+    },
+    categories: {
+      default: { appenders: ["console"], level: "info" },
+    },
+  });
+
+  const logger = log4js.getLogger();
+  logger.level = "debug";
+
+  logger.info("nice");
 
   return (
     <main className={styles.main}>
